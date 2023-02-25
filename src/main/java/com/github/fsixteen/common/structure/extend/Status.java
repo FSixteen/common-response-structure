@@ -9,10 +9,10 @@ import com.github.fsixteen.common.structure.utils.ProjectUtils;
 /**
  * 扩展交互标识信息.<br>
  * 格式如下: <br>
- * <code>
+ * <br>
  * 000000000000000000000000000000_000000000000_00000000_00 <br>
- * 自定义代码({@code BUSS_LENGTH}位)_项目代码({@code PROJ_LENGTH}位)_操作分类代码({@code TYPE_LENGTH}位)_有效性核心位代码({@code VALI_LENGTH}位) <br>
- * </code>
+ * 自定义代码({@code BUSS_LENGTH}位)_项目代码({@code PROJ_LENGTH}位)_操作分类代码({@code TYPE_LENGTH}位)_有效性核心位代码({@code VALI_LENGTH}位)
+ * <br>
  * 
  * @author FSixteen
  * @since V1.0.0
@@ -100,6 +100,14 @@ public interface Status {
     public static final Supplier<StatusInterface> STOP_ERROR = () -> bitOr(Type.STOP, Vali.ERROR, Type.WARNING.msg());
     /** 结束成功 */
     public static final Supplier<StatusInterface> STOP_SUCCES = () -> bitOr(Type.STOP, Vali.SUCCES, Type.WARNING.msg());
+    /** 暂无数据失败 */
+    public static final Supplier<StatusInterface> NONDATA_ERROR = () -> bitOr(Type.NONDATA, Vali.ERROR, Type.NONDATA.msg());
+    /** 暂无数据成功 */
+    public static final Supplier<StatusInterface> NONDATA_SUCCES = () -> bitOr(Type.NONDATA, Vali.SUCCES, Type.NONDATA.msg());
+    /** 数据已存在失败 */
+    public static final Supplier<StatusInterface> EXISTED_ERROR = () -> bitOr(Type.EXISTED, Vali.ERROR, Type.EXISTED.msg());
+    /** 数据已存在成功 */
+    public static final Supplier<StatusInterface> EXISTED_SUCCES = () -> bitOr(Type.EXISTED, Vali.SUCCES, Type.EXISTED.msg());
     /** 其他失败 */
     public static final Supplier<StatusInterface> OTHERS_ERROR = () -> bitOr(Type.OTHERS, Vali.ERROR);
     /** 其他成功 */

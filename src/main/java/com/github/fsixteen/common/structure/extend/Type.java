@@ -50,6 +50,10 @@ public enum Type implements StatusInterface {
     PAUSE(START.code() + TYPE_STEP, "暂停"),
     /** 线束 */
     STOP(PAUSE.code() + TYPE_STEP, "结束"),
+    /** 暂无数据 */
+    NONDATA(STOP.code() + TYPE_STEP, "暂无数据"),
+    /** 数据已存在 */
+    EXISTED(NONDATA.code() + TYPE_STEP, "数据已存在"),
     // 其他扩展内容
     /** 测试用, 不提供对外使用 */
     PLACEHOLDER(STOP.code() + TYPE_STEP, "占位符/不使用"),
