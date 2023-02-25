@@ -25,49 +25,49 @@ public final class PageInfo implements Serializable {
     /**
      * 是否是尾页.
      */
-    @Schema(name = "是否是尾页", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "是否是尾页", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "是否是尾页", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private boolean last = false;
 
     /**
      * 是否是首页.
      */
-    @Schema(name = "是否是首页", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "是否是首页", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "是否是首页", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private boolean first = false;
 
     /**
      * 总内容(记录)数.
      */
-    @Schema(name = "总内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "总内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "总内容(记录)数", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long totalElements = 0;
 
     /**
      * 总页数.
      */
-    @Schema(name = "总页数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "总页数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "总页数", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long totalPages = 0;
 
     /**
      * 当前页位置(从0计).
      */
-    @Schema(name = "当前页位置(从0计)", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "当前页位置(从0计)", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "当前页位置(从0计)", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long page = 0;
 
     /**
      * 当前页内容(记录)数.
      */
-    @Schema(name = "当前页内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "当前页内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "当前页内容(记录)数", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long size = 0;
 
     /**
      * 当前页实际内容(记录)数.
      */
-    @Schema(name = "当前页实际内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "当前页实际内容(记录)数", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "当前页实际内容(记录)数", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long sizeOfElements = 0;
 

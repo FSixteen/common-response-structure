@@ -16,21 +16,21 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
  */
 @Schema(title = "分页查询信息")
 @ApiModel(value = "分页查询信息")
-public class PageQuery implements Serializable {
+public class PageRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 当前页位置(从0计).
      */
-    @Schema(name = "当前页位置(从0计)", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "当前页位置(从0计)", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "当前页位置(从0计)", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long page = 0L;
 
     /**
      * 当前页内容(记录)数.
      */
-    @Schema(name = "当前页内容(记录)数", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "当前页内容(记录)数", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "当前页内容(记录)数", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long size = 10L;
 

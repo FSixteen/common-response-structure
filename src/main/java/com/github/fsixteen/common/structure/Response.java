@@ -10,8 +10,9 @@ import com.github.fsixteen.common.structure.extend.Ok;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 /**
  * 基础应答数据结构.<br>
@@ -27,22 +28,26 @@ public class Response<T extends Serializable, E extends Serializable> implements
 
     /** 提示状态码 */
     @JsonInclude(value = Include.NON_NULL)
-    @ApiModelProperty(value = "提示状态码", required = true, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "提示状态码", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @ApiModelProperty(value = "提示状态码", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long code;
 
     /** 提示内容 */
     @JsonInclude(value = Include.NON_NULL)
-    @ApiModelProperty(value = "提示内容", required = true, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "提示内容", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @ApiModelProperty(value = "提示内容", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private String msg;
 
     /** 元数据 */
     @JsonInclude(value = Include.NON_NULL)
-    @ApiModelProperty(value = "元数据", required = true, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "元数据", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @ApiModelProperty(value = "元数据", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private Meta<T, E> meta;
 
     /** 总内容(记录)数 */
     @JsonInclude(value = Include.NON_NULL)
-    @ApiModelProperty(value = "总内容(记录)数", required = false, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "总内容(记录)数", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @ApiModelProperty(value = "总内容(记录)数", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private Long total;
 
     /* ----------------------------------------------------- */

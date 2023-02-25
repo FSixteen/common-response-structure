@@ -31,7 +31,7 @@ public final class Meta<T extends Serializable, E extends Serializable> implemen
      * 数据内容.
      */
     @JsonInclude(value = Include.NON_NULL)
-    @Schema(name = "数据内容", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "数据内容", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "数据内容", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private T data;
 
@@ -39,7 +39,7 @@ public final class Meta<T extends Serializable, E extends Serializable> implemen
      * 扩展内容.
      */
     @JsonInclude(value = Include.NON_NULL)
-    @Schema(name = "扩展内容", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "扩展内容", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "扩展内容", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private E exts;
 
@@ -47,7 +47,7 @@ public final class Meta<T extends Serializable, E extends Serializable> implemen
      * 分页信息.
      */
     @JsonInclude(value = Include.NON_NULL)
-    @Schema(name = "分页信息", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
+    @Schema(description = "分页信息", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "分页信息", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private PageInfo page;
 
