@@ -6,7 +6,7 @@
 
 - 固定分页请求参数
 
-  - 详见 [Response](./src/main/java/com/github/fsixteen/common/structure/PageRequest.java)
+  - 详见 [PageRequest](./src/main/java/com/github/fsixteen/common/structure/PageRequest.java)
 
     ```json
     {
