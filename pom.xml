@@ -4,7 +4,7 @@
 
   <groupId>io.github.fsixteen</groupId>
   <artifactId>common-response-structure</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>jar</packaging>
 
   <name>common-response-structure</name>
@@ -44,11 +44,11 @@
     <maven.compiler.encoding>${encoding}</maven.compiler.encoding>
     <argLine>-Dfile.encoding=${encoding}</argLine>
 
-    <swagger.version>[1.6.9]</swagger.version>
-    <swagger.v3.version>[2.0.0,3.0.0)</swagger.v3.version>
-    <jackson.version>[2.0.0,3.0.0)</jackson.version>
-    <snakeyaml.version>[1.30,3.0.0)</snakeyaml.version>
-    <junit.jupiter.version>[5.8.0,6.0.0)</junit.jupiter.version>
+    <swagger.version>1.6.10</swagger.version>
+    <swagger.v3.version>2.2.9</swagger.v3.version>
+    <jackson.version>2.15.0</jackson.version>
+    <snakeyaml.version>2.0</snakeyaml.version>
+    <junit.jupiter.version>5.9.3</junit.jupiter.version>
   </properties>
 
   <dependencies>
@@ -96,14 +96,50 @@
         </dependencies>
         <configuration>
           <encoding>${encoding}</encoding>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <source>${java.version}</source>
+              <target>${java.version}</target>
+              <release>8</release>
+              <excludes>
+                <exclude>**/**/module-info.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>module-info-compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>9</release>
+              <compileSourceRoots>${project.basedir}/src/main/java9</compileSourceRoots>
+              <multiReleaseOutput>true</multiReleaseOutput>
+              <jdkToolchain>
+                <version>[9,)</version>
+              </jdkToolchain>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>true</addMavenDescriptor>
+            <index>true</index>
+            <manifestEntries>
+              <Automatic-Module-Name>io.github.fsixteen.common.response.structure</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
