@@ -4,7 +4,7 @@
 
   <groupId>io.github.fsixteen</groupId>
   <artifactId>common-response-structure</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <packaging>jar</packaging>
 
   <name>common-response-structure</name>

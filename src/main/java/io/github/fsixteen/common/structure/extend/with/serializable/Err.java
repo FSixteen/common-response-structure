@@ -2,7 +2,28 @@ package io.github.fsixteen.common.structure.extend.with.serializable;
 
 import java.io.Serializable;
 
-import io.github.fsixteen.common.structure.extend.Status;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrArgs;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrCheck;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrDelete;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrDownload;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrExisted;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrGeneral;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrInsert;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrLogin;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrLogout;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrNondata;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrOf;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrOthers;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrPause;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrPermission;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrRegist;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrReset;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrSelect;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrStart;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrStop;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrUpdate;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrUpload;
+import io.github.fsixteen.common.structure.extend.with.serializable.errs.ErrWarning;
 import io.github.fsixteen.common.structure.with.serializable.Response;
 import io.github.fsixteen.common.structure.with.serializable.Response.SimpleResponse;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +49,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> of() {
-        return Response.of(Status.GENERAL_ERROR.get());
+        return ErrOf.of();
     }
 
     /**
@@ -39,7 +60,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> of(final T data) {
-        return Response.of(Status.GENERAL_ERROR.get(), data);
+        return ErrOf.of(data);
     }
 
     /**
@@ -51,7 +72,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> of(final T data, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, totalElements);
+        return ErrOf.of(data, totalElements);
     }
 
     /**
@@ -65,58 +86,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> of(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> of(final String msg) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg);
+        return ErrOf.of(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final String msg, final T data) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> of(final T data, final String msg) {
+        return ErrOf.of(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> of(final T data, final long totalElements, final String msg) {
+        return ErrOf.of(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> of(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrOf.of(data, page, size, totalElements, msg);
     }
 
     /**
@@ -126,8 +136,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode) {
+        return ErrOf.ofWithSerc(serviceCode);
     }
 
     /**
@@ -138,8 +148,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data) {
+        return ErrOf.ofWithSerc(serviceCode, data);
     }
 
     /**
@@ -151,8 +161,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrOf.ofWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -166,9 +176,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, page, size, totalElements);
+        return ErrOf.ofWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -176,24 +186,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrOf.ofWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -201,13 +199,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrOf.ofWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -215,16 +213,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> of(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> ofWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrOf.ofWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -237,7 +235,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts);
+        return ErrOf.ofWithExts(data, exts);
     }
 
     /**
@@ -251,7 +249,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts, totalElements);
+        return ErrOf.ofWithExts(data, exts, totalElements);
     }
 
     /**
@@ -268,7 +266,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrOf.ofWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -276,13 +274,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts, final String msg) {
+        return ErrOf.ofWithExts(data, exts, msg);
     }
 
     /**
@@ -290,15 +288,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrOf.ofWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -306,17 +304,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrOf.ofWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -329,8 +327,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrOf.ofWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -344,9 +342,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts, totalElements);
+        return ErrOf.ofWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -362,9 +360,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrOf.ofWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -373,14 +371,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrOf.ofWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -389,15 +387,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrOf.ofWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -406,17 +404,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> ofWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrOf.ofWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -428,7 +426,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> general() {
-        return Response.of(Status.GENERAL_ERROR.get());
+        return ErrGeneral.general();
     }
 
     /**
@@ -439,7 +437,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> general(final T data) {
-        return Response.of(Status.GENERAL_ERROR.get(), data);
+        return ErrGeneral.general(data);
     }
 
     /**
@@ -451,7 +449,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> general(final T data, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, totalElements);
+        return ErrGeneral.general(data, totalElements);
     }
 
     /**
@@ -465,59 +463,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> general(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> general(final String msg) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg);
+        return ErrGeneral.general(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final String msg, final T data) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> general(final T data, final String msg) {
+        return ErrGeneral.general(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> general(final T data, final long totalElements, final String msg) {
+        return ErrGeneral.general(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> general(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrGeneral.general(data, page, size, totalElements, msg);
     }
 
     /**
@@ -527,8 +514,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode) {
+        return ErrGeneral.generalWithSerc(serviceCode);
     }
 
     /**
@@ -539,8 +526,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data) {
+        return ErrGeneral.generalWithSerc(serviceCode, data);
     }
 
     /**
@@ -552,8 +539,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrGeneral.generalWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -567,9 +554,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, page, size, totalElements);
+        return ErrGeneral.generalWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -577,24 +564,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrGeneral.generalWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -602,13 +577,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrGeneral.generalWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -616,16 +591,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> general(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> generalWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrGeneral.generalWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -638,7 +613,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts);
+        return ErrGeneral.generalWithExts(data, exts);
     }
 
     /**
@@ -652,7 +627,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts, totalElements);
+        return ErrGeneral.generalWithExts(data, exts, totalElements);
     }
 
     /**
@@ -669,7 +644,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrGeneral.generalWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -677,13 +652,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts, final String msg) {
+        return ErrGeneral.generalWithExts(data, exts, msg);
     }
 
     /**
@@ -691,15 +666,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrGeneral.generalWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -707,17 +682,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.GENERAL_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrGeneral.generalWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -730,8 +705,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -745,9 +720,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts, totalElements);
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -763,9 +738,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -774,14 +749,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -790,15 +765,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -807,17 +782,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.GENERAL_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> generalWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrGeneral.generalWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -829,7 +804,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> args() {
-        return Response.of(Status.ARGS_ERROR.get());
+        return ErrArgs.args();
     }
 
     /**
@@ -840,7 +815,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> args(final T data) {
-        return Response.of(Status.ARGS_ERROR.get(), data);
+        return ErrArgs.args(data);
     }
 
     /**
@@ -852,7 +827,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> args(final T data, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get(), data, totalElements);
+        return ErrArgs.args(data, totalElements);
     }
 
     /**
@@ -866,58 +841,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> args(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> args(final String msg) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg);
+        return ErrArgs.args(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final String msg, final T data) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> args(final T data, final String msg) {
+        return ErrArgs.args(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> args(final T data, final long totalElements, final String msg) {
+        return ErrArgs.args(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> args(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrArgs.args(data, page, size, totalElements, msg);
     }
 
     /**
@@ -927,8 +891,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode) {
+        return ErrArgs.argsWithSerc(serviceCode);
     }
 
     /**
@@ -939,8 +903,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data) {
+        return ErrArgs.argsWithSerc(serviceCode, data);
     }
 
     /**
@@ -952,8 +916,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrArgs.argsWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -967,9 +931,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data, page, size, totalElements);
+        return ErrArgs.argsWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -977,24 +941,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrArgs.argsWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -1002,13 +954,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrArgs.argsWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -1016,16 +968,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> args(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> argsWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrArgs.argsWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -1038,7 +990,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts) {
-        return Response.of(Status.ARGS_ERROR.get(), data, exts);
+        return ErrArgs.argsWithExts(data, exts);
     }
 
     /**
@@ -1052,7 +1004,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get(), data, exts, totalElements);
+        return ErrArgs.argsWithExts(data, exts, totalElements);
     }
 
     /**
@@ -1069,7 +1021,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrArgs.argsWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -1077,13 +1029,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts, final String msg) {
+        return ErrArgs.argsWithExts(data, exts, msg);
     }
 
     /**
@@ -1091,15 +1043,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrArgs.argsWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -1107,17 +1059,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.ARGS_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrArgs.argsWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -1130,8 +1082,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -1145,9 +1097,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data, exts, totalElements);
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -1163,9 +1115,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -1174,14 +1126,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -1190,15 +1142,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -1207,17 +1159,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.ARGS_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> argsWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrArgs.argsWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -1229,7 +1181,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> insert() {
-        return Response.of(Status.INSERT_ERROR.get());
+        return ErrInsert.insert();
     }
 
     /**
@@ -1240,7 +1192,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> insert(final T data) {
-        return Response.of(Status.INSERT_ERROR.get(), data);
+        return ErrInsert.insert(data);
     }
 
     /**
@@ -1252,7 +1204,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> insert(final T data, final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get(), data, totalElements);
+        return ErrInsert.insert(data, totalElements);
     }
 
     /**
@@ -1266,59 +1218,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> insert(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> insert(final String msg) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg);
+        return ErrInsert.insert(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final String msg, final T data) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> insert(final T data, final String msg) {
+        return ErrInsert.insert(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> insert(final T data, final long totalElements, final String msg) {
+        return ErrInsert.insert(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> insert(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrInsert.insert(data, page, size, totalElements, msg);
     }
 
     /**
@@ -1328,8 +1269,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode) {
+        return ErrInsert.insertWithSerc(serviceCode);
     }
 
     /**
@@ -1340,8 +1281,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data) {
+        return ErrInsert.insertWithSerc(serviceCode, data);
     }
 
     /**
@@ -1353,8 +1294,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrInsert.insertWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -1368,9 +1309,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data, page, size, totalElements);
+        return ErrInsert.insertWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -1378,24 +1319,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrInsert.insertWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -1403,13 +1332,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrInsert.insertWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -1417,16 +1346,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> insert(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> insertWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrInsert.insertWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -1439,7 +1368,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts) {
-        return Response.of(Status.INSERT_ERROR.get(), data, exts);
+        return ErrInsert.insertWithExts(data, exts);
     }
 
     /**
@@ -1453,7 +1382,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get(), data, exts, totalElements);
+        return ErrInsert.insertWithExts(data, exts, totalElements);
     }
 
     /**
@@ -1470,7 +1399,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrInsert.insertWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -1478,13 +1407,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts, final String msg) {
+        return ErrInsert.insertWithExts(data, exts, msg);
     }
 
     /**
@@ -1492,15 +1421,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrInsert.insertWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -1508,17 +1437,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.INSERT_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrInsert.insertWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -1531,8 +1460,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -1546,9 +1475,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data, exts, totalElements);
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -1564,9 +1493,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -1575,14 +1504,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -1591,15 +1520,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -1608,17 +1537,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.INSERT_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> insertWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrInsert.insertWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -1630,7 +1559,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> delete() {
-        return Response.of(Status.DELETE_ERROR.get());
+        return ErrDelete.delete();
     }
 
     /**
@@ -1641,7 +1570,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> delete(final T data) {
-        return Response.of(Status.DELETE_ERROR.get(), data);
+        return ErrDelete.delete(data);
     }
 
     /**
@@ -1653,7 +1582,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> delete(final T data, final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get(), data, totalElements);
+        return ErrDelete.delete(data, totalElements);
     }
 
     /**
@@ -1667,59 +1596,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> delete(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> delete(final String msg) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg);
+        return ErrDelete.delete(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final String msg, final T data) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> delete(final T data, final String msg) {
+        return ErrDelete.delete(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> delete(final T data, final long totalElements, final String msg) {
+        return ErrDelete.delete(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> delete(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrDelete.delete(data, page, size, totalElements, msg);
     }
 
     /**
@@ -1729,8 +1647,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode) {
+        return ErrDelete.deleteWithSerc(serviceCode);
     }
 
     /**
@@ -1741,8 +1659,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data) {
+        return ErrDelete.deleteWithSerc(serviceCode, data);
     }
 
     /**
@@ -1754,8 +1672,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrDelete.deleteWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -1769,9 +1687,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, page, size, totalElements);
+        return ErrDelete.deleteWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -1779,24 +1697,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrDelete.deleteWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -1804,13 +1710,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrDelete.deleteWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -1818,16 +1724,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> delete(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrDelete.deleteWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -1840,7 +1746,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts) {
-        return Response.of(Status.DELETE_ERROR.get(), data, exts);
+        return ErrDelete.deleteWithExts(data, exts);
     }
 
     /**
@@ -1854,7 +1760,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get(), data, exts, totalElements);
+        return ErrDelete.deleteWithExts(data, exts, totalElements);
     }
 
     /**
@@ -1871,7 +1777,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrDelete.deleteWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -1879,13 +1785,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts, final String msg) {
+        return ErrDelete.deleteWithExts(data, exts, msg);
     }
 
     /**
@@ -1893,15 +1799,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrDelete.deleteWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -1909,17 +1815,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.DELETE_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrDelete.deleteWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -1932,8 +1838,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -1947,9 +1853,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, exts, totalElements);
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -1965,9 +1871,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -1976,14 +1882,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -1992,15 +1898,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -2009,17 +1915,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrDelete.deleteWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -2031,7 +1937,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> update() {
-        return Response.of(Status.UPDATE_ERROR.get());
+        return ErrUpdate.update();
     }
 
     /**
@@ -2042,7 +1948,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> update(final T data) {
-        return Response.of(Status.UPDATE_ERROR.get(), data);
+        return ErrUpdate.update(data);
     }
 
     /**
@@ -2054,7 +1960,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> update(final T data, final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get(), data, totalElements);
+        return ErrUpdate.update(data, totalElements);
     }
 
     /**
@@ -2068,59 +1974,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> update(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> update(final String msg) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg);
+        return ErrUpdate.update(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final String msg, final T data) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> update(final T data, final String msg) {
+        return ErrUpdate.update(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> update(final T data, final long totalElements, final String msg) {
+        return ErrUpdate.update(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> update(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrUpdate.update(data, page, size, totalElements, msg);
     }
 
     /**
@@ -2130,8 +2025,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode) {
+        return ErrUpdate.updateWithSerc(serviceCode);
     }
 
     /**
@@ -2142,8 +2037,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data) {
+        return ErrUpdate.updateWithSerc(serviceCode, data);
     }
 
     /**
@@ -2155,8 +2050,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrUpdate.updateWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -2170,9 +2065,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data, page, size, totalElements);
+        return ErrUpdate.updateWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -2180,24 +2075,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrUpdate.updateWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -2205,13 +2088,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrUpdate.updateWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -2219,16 +2102,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> update(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> updateWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrUpdate.updateWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -2241,7 +2124,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts) {
-        return Response.of(Status.UPDATE_ERROR.get(), data, exts);
+        return ErrUpdate.updateWithExts(data, exts);
     }
 
     /**
@@ -2255,7 +2138,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get(), data, exts, totalElements);
+        return ErrUpdate.updateWithExts(data, exts, totalElements);
     }
 
     /**
@@ -2272,7 +2155,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrUpdate.updateWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -2280,13 +2163,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts, final String msg) {
+        return ErrUpdate.updateWithExts(data, exts, msg);
     }
 
     /**
@@ -2294,15 +2177,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrUpdate.updateWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -2310,17 +2193,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.UPDATE_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrUpdate.updateWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -2333,8 +2216,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -2348,9 +2231,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data, exts, totalElements);
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -2366,9 +2249,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -2377,14 +2260,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -2393,15 +2276,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -2410,17 +2293,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPDATE_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> updateWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrUpdate.updateWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -2432,7 +2315,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> select() {
-        return Response.of(Status.SELECT_ERROR.get());
+        return ErrSelect.select();
     }
 
     /**
@@ -2443,7 +2326,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> select(final T data) {
-        return Response.of(Status.SELECT_ERROR.get(), data);
+        return ErrSelect.select(data);
     }
 
     /**
@@ -2455,7 +2338,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> select(final T data, final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get(), data, totalElements);
+        return ErrSelect.select(data, totalElements);
     }
 
     /**
@@ -2469,59 +2352,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> select(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> select(final String msg) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg);
+        return ErrSelect.select(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final String msg, final T data) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> select(final T data, final String msg) {
+        return ErrSelect.select(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> select(final T data, final long totalElements, final String msg) {
+        return ErrSelect.select(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> select(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrSelect.select(data, page, size, totalElements, msg);
     }
 
     /**
@@ -2531,8 +2403,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode) {
+        return ErrSelect.selectWithSerc(serviceCode);
     }
 
     /**
@@ -2543,8 +2415,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data) {
+        return ErrSelect.selectWithSerc(serviceCode, data);
     }
 
     /**
@@ -2556,8 +2428,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrSelect.selectWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -2571,9 +2443,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data, page, size, totalElements);
+        return ErrSelect.selectWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -2581,24 +2453,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrSelect.selectWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -2606,13 +2466,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrSelect.selectWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -2620,16 +2480,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> select(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> selectWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrSelect.selectWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -2642,7 +2502,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts) {
-        return Response.of(Status.SELECT_ERROR.get(), data, exts);
+        return ErrSelect.selectWithExts(data, exts);
     }
 
     /**
@@ -2656,7 +2516,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get(), data, exts, totalElements);
+        return ErrSelect.selectWithExts(data, exts, totalElements);
     }
 
     /**
@@ -2673,7 +2533,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrSelect.selectWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -2681,13 +2541,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts, final String msg) {
+        return ErrSelect.selectWithExts(data, exts, msg);
     }
 
     /**
@@ -2695,15 +2555,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrSelect.selectWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -2711,17 +2571,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.SELECT_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrSelect.selectWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -2734,8 +2594,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -2749,9 +2609,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data, exts, totalElements);
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -2767,9 +2627,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -2778,14 +2638,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -2794,15 +2654,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -2811,17 +2671,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.SELECT_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> selectWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrSelect.selectWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -2833,7 +2693,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> regist() {
-        return Response.of(Status.REGIST_ERROR.get());
+        return ErrRegist.regist();
     }
 
     /**
@@ -2844,7 +2704,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> regist(final T data) {
-        return Response.of(Status.REGIST_ERROR.get(), data);
+        return ErrRegist.regist(data);
     }
 
     /**
@@ -2856,7 +2716,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> regist(final T data, final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get(), data, totalElements);
+        return ErrRegist.regist(data, totalElements);
     }
 
     /**
@@ -2870,59 +2730,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> regist(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> regist(final String msg) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg);
+        return ErrRegist.regist(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final String msg, final T data) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> regist(final T data, final String msg) {
+        return ErrRegist.regist(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> regist(final T data, final long totalElements, final String msg) {
+        return ErrRegist.regist(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> regist(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrRegist.regist(data, page, size, totalElements, msg);
     }
 
     /**
@@ -2932,8 +2781,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode) {
+        return ErrRegist.registWithSerc(serviceCode);
     }
 
     /**
@@ -2944,8 +2793,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data) {
+        return ErrRegist.registWithSerc(serviceCode, data);
     }
 
     /**
@@ -2957,8 +2806,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrRegist.registWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -2972,9 +2821,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data, page, size, totalElements);
+        return ErrRegist.registWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -2982,24 +2831,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrRegist.registWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -3007,13 +2844,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrRegist.registWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -3021,16 +2858,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> regist(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> registWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrRegist.registWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -3043,7 +2880,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts) {
-        return Response.of(Status.REGIST_ERROR.get(), data, exts);
+        return ErrRegist.registWithExts(data, exts);
     }
 
     /**
@@ -3057,7 +2894,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get(), data, exts, totalElements);
+        return ErrRegist.registWithExts(data, exts, totalElements);
     }
 
     /**
@@ -3074,7 +2911,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrRegist.registWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -3082,13 +2919,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts, final String msg) {
+        return ErrRegist.registWithExts(data, exts, msg);
     }
 
     /**
@@ -3096,15 +2933,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrRegist.registWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -3112,17 +2949,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.REGIST_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrRegist.registWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -3135,8 +2972,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrRegist.registWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -3150,9 +2987,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data, exts, totalElements);
+        return ErrRegist.registWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -3168,9 +3005,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrRegist.registWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -3179,14 +3016,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrRegist.registWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -3195,15 +3032,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrRegist.registWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -3212,17 +3049,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.REGIST_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> registWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrRegist.registWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -3234,7 +3071,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> reset() {
-        return Response.of(Status.RESET_ERROR.get());
+        return ErrReset.reset();
     }
 
     /**
@@ -3245,7 +3082,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> reset(final T data) {
-        return Response.of(Status.RESET_ERROR.get(), data);
+        return ErrReset.reset(data);
     }
 
     /**
@@ -3257,7 +3094,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> reset(final T data, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get(), data, totalElements);
+        return ErrReset.reset(data, totalElements);
     }
 
     /**
@@ -3271,58 +3108,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> reset(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> reset(final String msg) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg);
+        return ErrReset.reset(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final String msg, final T data) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> reset(final T data, final String msg) {
+        return ErrReset.reset(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> reset(final T data, final long totalElements, final String msg) {
+        return ErrReset.reset(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> reset(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrReset.reset(data, page, size, totalElements, msg);
     }
 
     /**
@@ -3332,8 +3158,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode) {
+        return ErrReset.resetWithSerc(serviceCode);
     }
 
     /**
@@ -3344,8 +3170,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data) {
+        return ErrReset.resetWithSerc(serviceCode, data);
     }
 
     /**
@@ -3357,8 +3183,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrReset.resetWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -3372,9 +3198,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data, page, size, totalElements);
+        return ErrReset.resetWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -3382,24 +3208,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrReset.resetWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -3407,13 +3221,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrReset.resetWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -3421,16 +3235,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> reset(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> resetWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrReset.resetWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -3443,7 +3257,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts) {
-        return Response.of(Status.RESET_ERROR.get(), data, exts);
+        return ErrReset.resetWithExts(data, exts);
     }
 
     /**
@@ -3457,7 +3271,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get(), data, exts, totalElements);
+        return ErrReset.resetWithExts(data, exts, totalElements);
     }
 
     /**
@@ -3474,7 +3288,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrReset.resetWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -3482,13 +3296,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts, final String msg) {
+        return ErrReset.resetWithExts(data, exts, msg);
     }
 
     /**
@@ -3496,15 +3310,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrReset.resetWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -3512,17 +3326,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.RESET_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrReset.resetWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -3535,8 +3349,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrReset.resetWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -3550,9 +3364,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data, exts, totalElements);
+        return ErrReset.resetWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -3568,9 +3382,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrReset.resetWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -3579,14 +3393,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrReset.resetWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -3595,15 +3409,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrReset.resetWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -3612,17 +3426,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.RESET_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> resetWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrReset.resetWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -3634,7 +3448,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> login() {
-        return Response.of(Status.LOGIN_ERROR.get());
+        return ErrLogin.login();
     }
 
     /**
@@ -3645,7 +3459,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> login(final T data) {
-        return Response.of(Status.LOGIN_ERROR.get(), data);
+        return ErrLogin.login(data);
     }
 
     /**
@@ -3657,7 +3471,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> login(final T data, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get(), data, totalElements);
+        return ErrLogin.login(data, totalElements);
     }
 
     /**
@@ -3671,58 +3485,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> login(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> login(final String msg) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg);
+        return ErrLogin.login(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final String msg, final T data) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> login(final T data, final String msg) {
+        return ErrLogin.login(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> login(final T data, final long totalElements, final String msg) {
+        return ErrLogin.login(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> login(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrLogin.login(data, page, size, totalElements, msg);
     }
 
     /**
@@ -3732,8 +3535,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode) {
+        return ErrLogin.loginWithSerc(serviceCode);
     }
 
     /**
@@ -3744,8 +3547,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data) {
+        return ErrLogin.loginWithSerc(serviceCode, data);
     }
 
     /**
@@ -3757,8 +3560,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrLogin.loginWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -3772,9 +3575,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data, page, size, totalElements);
+        return ErrLogin.loginWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -3782,24 +3585,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrLogin.loginWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -3807,13 +3598,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrLogin.loginWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -3821,16 +3612,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> login(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> loginWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrLogin.loginWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -3843,7 +3634,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts) {
-        return Response.of(Status.LOGIN_ERROR.get(), data, exts);
+        return ErrLogin.loginWithExts(data, exts);
     }
 
     /**
@@ -3857,7 +3648,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get(), data, exts, totalElements);
+        return ErrLogin.loginWithExts(data, exts, totalElements);
     }
 
     /**
@@ -3874,7 +3665,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrLogin.loginWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -3882,13 +3673,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts, final String msg) {
+        return ErrLogin.loginWithExts(data, exts, msg);
     }
 
     /**
@@ -3896,15 +3687,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrLogin.loginWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -3912,17 +3703,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.LOGIN_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrLogin.loginWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -3935,8 +3726,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -3950,9 +3741,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data, exts, totalElements);
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -3968,9 +3759,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -3979,14 +3770,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -3995,15 +3786,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -4012,17 +3803,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGIN_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> loginWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrLogin.loginWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -4034,7 +3825,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> logout() {
-        return Response.of(Status.LOGOUT_ERROR.get());
+        return ErrLogout.logout();
     }
 
     /**
@@ -4045,7 +3836,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> logout(final T data) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data);
+        return ErrLogout.logout(data);
     }
 
     /**
@@ -4057,7 +3848,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> logout(final T data, final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data, totalElements);
+        return ErrLogout.logout(data, totalElements);
     }
 
     /**
@@ -4071,59 +3862,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> logout(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> logout(final String msg) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg);
+        return ErrLogout.logout(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final String msg, final T data) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> logout(final T data, final String msg) {
+        return ErrLogout.logout(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> logout(final T data, final long totalElements, final String msg) {
+        return ErrLogout.logout(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> logout(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrLogout.logout(data, page, size, totalElements, msg);
     }
 
     /**
@@ -4133,8 +3913,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode) {
+        return ErrLogout.logoutWithSerc(serviceCode);
     }
 
     /**
@@ -4145,8 +3925,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data) {
+        return ErrLogout.logoutWithSerc(serviceCode, data);
     }
 
     /**
@@ -4158,8 +3938,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrLogout.logoutWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -4173,9 +3953,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data, page, size, totalElements);
+        return ErrLogout.logoutWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -4183,24 +3963,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrLogout.logoutWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -4208,13 +3976,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrLogout.logoutWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -4222,16 +3990,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> logout(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> logoutWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrLogout.logoutWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -4244,7 +4012,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data, exts);
+        return ErrLogout.logoutWithExts(data, exts);
     }
 
     /**
@@ -4258,7 +4026,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data, exts, totalElements);
+        return ErrLogout.logoutWithExts(data, exts, totalElements);
     }
 
     /**
@@ -4275,7 +4043,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrLogout.logoutWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -4283,13 +4051,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts, final String msg) {
+        return ErrLogout.logoutWithExts(data, exts, msg);
     }
 
     /**
@@ -4297,15 +4065,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrLogout.logoutWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -4313,17 +4081,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.LOGOUT_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrLogout.logoutWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -4336,8 +4104,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -4351,9 +4119,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data, exts, totalElements);
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -4369,9 +4137,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -4380,14 +4148,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -4396,15 +4164,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -4413,17 +4181,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.LOGOUT_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> logoutWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrLogout.logoutWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -4435,7 +4203,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> permission() {
-        return Response.of(Status.PERMISSION_ERROR.get());
+        return ErrPermission.permission();
     }
 
     /**
@@ -4446,7 +4214,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> permission(final T data) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data);
+        return ErrPermission.permission(data);
     }
 
     /**
@@ -4458,7 +4226,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> permission(final T data, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data, totalElements);
+        return ErrPermission.permission(data, totalElements);
     }
 
     /**
@@ -4472,59 +4240,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> permission(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> permission(final String msg) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg);
+        return ErrPermission.permission(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final String msg, final T data) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> permission(final T data, final String msg) {
+        return ErrPermission.permission(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> permission(final T data, final long totalElements, final String msg) {
+        return ErrPermission.permission(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> permission(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrPermission.permission(data, page, size, totalElements, msg);
     }
 
     /**
@@ -4534,8 +4291,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode) {
+        return ErrPermission.permissionWithSerc(serviceCode);
     }
 
     /**
@@ -4546,8 +4303,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data) {
+        return ErrPermission.permissionWithSerc(serviceCode, data);
     }
 
     /**
@@ -4559,8 +4316,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrPermission.permissionWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -4574,9 +4331,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data, page, size, totalElements);
+        return ErrPermission.permissionWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -4584,24 +4341,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrPermission.permissionWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -4609,13 +4354,14 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data, final long totalElements,
+            final String msg) {
+        return ErrPermission.permissionWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -4623,16 +4369,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> permission(final long serviceCode, final String msg, final T data, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> permissionWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrPermission.permissionWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -4645,7 +4391,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data, exts);
+        return ErrPermission.permissionWithExts(data, exts);
     }
 
     /**
@@ -4659,7 +4405,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data, exts, totalElements);
+        return ErrPermission.permissionWithExts(data, exts, totalElements);
     }
 
     /**
@@ -4676,7 +4422,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts, final long page,
             final long size, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrPermission.permissionWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -4684,13 +4430,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts, final String msg) {
+        return ErrPermission.permissionWithExts(data, exts, msg);
     }
 
     /**
@@ -4698,15 +4444,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrPermission.permissionWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -4714,17 +4460,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final String msg, final T data, final E exts,
-            final long page, final long size, final long totalElements) {
-        return Response.of(Status.PERMISSION_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final T data, final E exts, final long page,
+            final long size, final long totalElements, final String msg) {
+        return ErrPermission.permissionWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -4737,8 +4483,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -4752,9 +4498,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data, exts, totalElements);
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -4770,9 +4516,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -4781,14 +4527,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
+     * @param data        数据内容
+     * @param exts        扩展内容
      * @param msg         自定义提示内容
-     * @param data        数据内容
-     * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -4797,15 +4543,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -4814,17 +4560,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PERMISSION_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> permissionWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrPermission.permissionWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -4836,7 +4582,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> upload() {
-        return Response.of(Status.UPLOAD_ERROR.get());
+        return ErrUpload.upload();
     }
 
     /**
@@ -4847,7 +4593,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> upload(final T data) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data);
+        return ErrUpload.upload(data);
     }
 
     /**
@@ -4859,7 +4605,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> upload(final T data, final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data, totalElements);
+        return ErrUpload.upload(data, totalElements);
     }
 
     /**
@@ -4873,59 +4619,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> upload(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> upload(final String msg) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg);
+        return ErrUpload.upload(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final String msg, final T data) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> upload(final T data, final String msg) {
+        return ErrUpload.upload(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> upload(final T data, final long totalElements, final String msg) {
+        return ErrUpload.upload(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> upload(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrUpload.upload(data, page, size, totalElements, msg);
     }
 
     /**
@@ -4935,8 +4670,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode) {
+        return ErrUpload.uploadWithSerc(serviceCode);
     }
 
     /**
@@ -4947,8 +4682,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data) {
+        return ErrUpload.uploadWithSerc(serviceCode, data);
     }
 
     /**
@@ -4960,8 +4695,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrUpload.uploadWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -4975,9 +4710,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data, page, size, totalElements);
+        return ErrUpload.uploadWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -4985,24 +4720,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrUpload.uploadWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -5010,13 +4733,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrUpload.uploadWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -5024,16 +4747,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> upload(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> uploadWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrUpload.uploadWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -5046,7 +4769,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data, exts);
+        return ErrUpload.uploadWithExts(data, exts);
     }
 
     /**
@@ -5060,7 +4783,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data, exts, totalElements);
+        return ErrUpload.uploadWithExts(data, exts, totalElements);
     }
 
     /**
@@ -5077,7 +4800,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrUpload.uploadWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -5085,13 +4808,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts, final String msg) {
+        return ErrUpload.uploadWithExts(data, exts, msg);
     }
 
     /**
@@ -5099,15 +4822,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrUpload.uploadWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -5115,17 +4838,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.UPLOAD_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrUpload.uploadWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -5138,8 +4861,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -5153,9 +4876,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data, exts, totalElements);
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -5171,9 +4894,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -5182,14 +4905,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -5198,15 +4921,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -5215,17 +4938,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.UPLOAD_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> uploadWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrUpload.uploadWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -5237,7 +4960,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> download() {
-        return Response.of(Status.DOWNLOAD_ERROR.get());
+        return ErrDownload.download();
     }
 
     /**
@@ -5248,7 +4971,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> download(final T data) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data);
+        return ErrDownload.download(data);
     }
 
     /**
@@ -5260,7 +4983,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> download(final T data, final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data, totalElements);
+        return ErrDownload.download(data, totalElements);
     }
 
     /**
@@ -5274,59 +4997,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> download(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> download(final String msg) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg);
+        return ErrDownload.download(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final String msg, final T data) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> download(final T data, final String msg) {
+        return ErrDownload.download(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> download(final T data, final long totalElements, final String msg) {
+        return ErrDownload.download(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> download(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrDownload.download(data, page, size, totalElements, msg);
     }
 
     /**
@@ -5336,8 +5048,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode) {
+        return ErrDownload.downloadWithSerc(serviceCode);
     }
 
     /**
@@ -5348,8 +5060,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data) {
+        return ErrDownload.downloadWithSerc(serviceCode, data);
     }
 
     /**
@@ -5361,8 +5073,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrDownload.downloadWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -5376,9 +5088,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data, page, size, totalElements);
+        return ErrDownload.downloadWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -5386,24 +5098,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrDownload.downloadWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -5411,13 +5111,14 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long totalElements,
+            final String msg) {
+        return ErrDownload.downloadWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -5425,16 +5126,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> download(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrDownload.downloadWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -5447,7 +5148,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data, exts);
+        return ErrDownload.downloadWithExts(data, exts);
     }
 
     /**
@@ -5461,7 +5162,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data, exts, totalElements);
+        return ErrDownload.downloadWithExts(data, exts, totalElements);
     }
 
     /**
@@ -5478,7 +5179,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrDownload.downloadWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -5486,13 +5187,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final String msg) {
+        return ErrDownload.downloadWithExts(data, exts, msg);
     }
 
     /**
@@ -5500,15 +5201,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrDownload.downloadWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -5516,17 +5217,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final String msg, final T data, final E exts,
-            final long page, final long size, final long totalElements) {
-        return Response.of(Status.DOWNLOAD_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrDownload.downloadWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -5539,8 +5240,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -5554,9 +5255,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data, exts, totalElements);
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -5572,9 +5273,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -5583,14 +5284,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
+     * @param data        数据内容
+     * @param exts        扩展内容
      * @param msg         自定义提示内容
-     * @param data        数据内容
-     * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -5599,15 +5300,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -5616,17 +5317,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrDownload.downloadWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -5638,7 +5339,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> check() {
-        return Response.of(Status.CHECK_ERROR.get());
+        return ErrCheck.check();
     }
 
     /**
@@ -5649,7 +5350,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> check(final T data) {
-        return Response.of(Status.CHECK_ERROR.get(), data);
+        return ErrCheck.check(data);
     }
 
     /**
@@ -5661,7 +5362,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> check(final T data, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get(), data, totalElements);
+        return ErrCheck.check(data, totalElements);
     }
 
     /**
@@ -5675,58 +5376,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> check(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> check(final String msg) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg);
+        return ErrCheck.check(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final String msg, final T data) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> check(final T data, final String msg) {
+        return ErrCheck.check(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> check(final T data, final long totalElements, final String msg) {
+        return ErrCheck.check(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> check(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrCheck.check(data, page, size, totalElements, msg);
     }
 
     /**
@@ -5736,8 +5426,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode) {
+        return ErrCheck.checkWithSerc(serviceCode);
     }
 
     /**
@@ -5748,8 +5438,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data) {
+        return ErrCheck.checkWithSerc(serviceCode, data);
     }
 
     /**
@@ -5761,8 +5451,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrCheck.checkWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -5776,9 +5466,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data, page, size, totalElements);
+        return ErrCheck.checkWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -5786,24 +5476,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrCheck.checkWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -5811,13 +5489,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrCheck.checkWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -5825,16 +5503,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> check(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> checkWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrCheck.checkWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -5847,7 +5525,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts) {
-        return Response.of(Status.CHECK_ERROR.get(), data, exts);
+        return ErrCheck.checkWithExts(data, exts);
     }
 
     /**
@@ -5861,7 +5539,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get(), data, exts, totalElements);
+        return ErrCheck.checkWithExts(data, exts, totalElements);
     }
 
     /**
@@ -5878,7 +5556,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrCheck.checkWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -5886,13 +5564,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts, final String msg) {
+        return ErrCheck.checkWithExts(data, exts, msg);
     }
 
     /**
@@ -5900,15 +5578,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrCheck.checkWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -5916,17 +5594,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.CHECK_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrCheck.checkWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -5939,8 +5617,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -5954,9 +5632,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data, exts, totalElements);
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -5972,9 +5650,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -5983,14 +5661,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -5999,15 +5677,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -6016,17 +5694,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.CHECK_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> checkWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrCheck.checkWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -6038,7 +5716,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> warning() {
-        return Response.of(Status.WARNING_ERROR.get());
+        return ErrWarning.warning();
     }
 
     /**
@@ -6049,7 +5727,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> warning(final T data) {
-        return Response.of(Status.WARNING_ERROR.get(), data);
+        return ErrWarning.warning(data);
     }
 
     /**
@@ -6061,7 +5739,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> warning(final T data, final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get(), data, totalElements);
+        return ErrWarning.warning(data, totalElements);
     }
 
     /**
@@ -6075,59 +5753,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> warning(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> warning(final String msg) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg);
+        return ErrWarning.warning(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final String msg, final T data) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> warning(final T data, final String msg) {
+        return ErrWarning.warning(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> warning(final T data, final long totalElements, final String msg) {
+        return ErrWarning.warning(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> warning(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrWarning.warning(data, page, size, totalElements, msg);
     }
 
     /**
@@ -6137,8 +5804,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode) {
+        return ErrWarning.warningWithSerc(serviceCode);
     }
 
     /**
@@ -6149,8 +5816,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data) {
+        return ErrWarning.warningWithSerc(serviceCode, data);
     }
 
     /**
@@ -6162,8 +5829,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrWarning.warningWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -6177,9 +5844,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data, page, size, totalElements);
+        return ErrWarning.warningWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -6187,24 +5854,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrWarning.warningWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -6212,13 +5867,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrWarning.warningWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -6226,16 +5881,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> warning(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrWarning.warningWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -6248,7 +5903,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts) {
-        return Response.of(Status.WARNING_ERROR.get(), data, exts);
+        return ErrWarning.warningWithExts(data, exts);
     }
 
     /**
@@ -6262,7 +5917,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get(), data, exts, totalElements);
+        return ErrWarning.warningWithExts(data, exts, totalElements);
     }
 
     /**
@@ -6279,7 +5934,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrWarning.warningWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -6287,13 +5942,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts, final String msg) {
+        return ErrWarning.warningWithExts(data, exts, msg);
     }
 
     /**
@@ -6301,15 +5956,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrWarning.warningWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -6317,17 +5972,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.WARNING_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrWarning.warningWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -6340,8 +5995,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -6355,9 +6010,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data, exts, totalElements);
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -6373,9 +6028,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -6384,14 +6039,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -6400,15 +6055,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -6417,17 +6072,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.WARNING_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrWarning.warningWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -6439,7 +6094,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> start() {
-        return Response.of(Status.START_ERROR.get());
+        return ErrStart.start();
     }
 
     /**
@@ -6450,7 +6105,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> start(final T data) {
-        return Response.of(Status.START_ERROR.get(), data);
+        return ErrStart.start(data);
     }
 
     /**
@@ -6462,7 +6117,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> start(final T data, final long totalElements) {
-        return Response.of(Status.START_ERROR.get(), data, totalElements);
+        return ErrStart.start(data, totalElements);
     }
 
     /**
@@ -6476,58 +6131,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> start(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.START_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> start(final String msg) {
-        return Response.of(Status.START_ERROR.get().code(), msg);
+        return ErrStart.start(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final String msg, final T data) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> start(final T data, final String msg) {
+        return ErrStart.start(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> start(final T data, final long totalElements, final String msg) {
+        return ErrStart.start(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> start(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrStart.start(data, page, size, totalElements, msg);
     }
 
     /**
@@ -6537,8 +6181,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode) {
+        return ErrStart.startWithSerc(serviceCode);
     }
 
     /**
@@ -6549,8 +6193,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data) {
+        return ErrStart.startWithSerc(serviceCode, data);
     }
 
     /**
@@ -6562,8 +6206,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrStart.startWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -6577,9 +6221,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data, page, size, totalElements);
+        return ErrStart.startWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -6587,24 +6231,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrStart.startWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -6612,13 +6244,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrStart.startWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -6626,16 +6258,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> start(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> startWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrStart.startWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -6648,7 +6280,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts) {
-        return Response.of(Status.START_ERROR.get(), data, exts);
+        return ErrStart.startWithExts(data, exts);
     }
 
     /**
@@ -6662,7 +6294,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.START_ERROR.get(), data, exts, totalElements);
+        return ErrStart.startWithExts(data, exts, totalElements);
     }
 
     /**
@@ -6679,7 +6311,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.START_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrStart.startWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -6687,13 +6319,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts, final String msg) {
+        return ErrStart.startWithExts(data, exts, msg);
     }
 
     /**
@@ -6701,15 +6333,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrStart.startWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -6717,17 +6349,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.START_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrStart.startWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -6740,8 +6372,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrStart.startWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -6755,9 +6387,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data, exts, totalElements);
+        return ErrStart.startWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -6773,9 +6405,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrStart.startWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -6784,14 +6416,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrStart.startWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -6800,15 +6432,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrStart.startWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -6817,17 +6449,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.START_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> startWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrStart.startWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -6839,7 +6471,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> pause() {
-        return Response.of(Status.PAUSE_ERROR.get());
+        return ErrPause.pause();
     }
 
     /**
@@ -6850,7 +6482,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> pause(final T data) {
-        return Response.of(Status.PAUSE_ERROR.get(), data);
+        return ErrPause.pause(data);
     }
 
     /**
@@ -6862,7 +6494,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> pause(final T data, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get(), data, totalElements);
+        return ErrPause.pause(data, totalElements);
     }
 
     /**
@@ -6876,58 +6508,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> pause(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> pause(final String msg) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg);
+        return ErrPause.pause(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final String msg, final T data) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> pause(final T data, final String msg) {
+        return ErrPause.pause(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> pause(final T data, final long totalElements, final String msg) {
+        return ErrPause.pause(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> pause(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrPause.pause(data, page, size, totalElements, msg);
     }
 
     /**
@@ -6937,8 +6558,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode) {
+        return ErrPause.pauseWithSerc(serviceCode);
     }
 
     /**
@@ -6949,8 +6570,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data) {
+        return ErrPause.pauseWithSerc(serviceCode, data);
     }
 
     /**
@@ -6962,8 +6583,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrPause.pauseWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -6977,9 +6598,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data, page, size, totalElements);
+        return ErrPause.pauseWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -6987,24 +6608,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrPause.pauseWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -7012,13 +6621,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrPause.pauseWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -7026,16 +6635,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> pause(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> pauseWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrPause.pauseWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -7048,7 +6657,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts) {
-        return Response.of(Status.PAUSE_ERROR.get(), data, exts);
+        return ErrPause.pauseWithExts(data, exts);
     }
 
     /**
@@ -7062,7 +6671,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get(), data, exts, totalElements);
+        return ErrPause.pauseWithExts(data, exts, totalElements);
     }
 
     /**
@@ -7079,7 +6688,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrPause.pauseWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -7087,13 +6696,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts, final String msg) {
+        return ErrPause.pauseWithExts(data, exts, msg);
     }
 
     /**
@@ -7101,15 +6710,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrPause.pauseWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -7117,17 +6726,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.PAUSE_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrPause.pauseWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -7140,8 +6749,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -7155,9 +6764,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data, exts, totalElements);
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -7173,9 +6782,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -7184,14 +6793,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -7200,15 +6809,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -7217,17 +6826,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.PAUSE_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> pauseWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrPause.pauseWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -7239,7 +6848,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> stop() {
-        return Response.of(Status.STOP_ERROR.get());
+        return ErrStop.stop();
     }
 
     /**
@@ -7250,7 +6859,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> stop(final T data) {
-        return Response.of(Status.STOP_ERROR.get(), data);
+        return ErrStop.stop(data);
     }
 
     /**
@@ -7262,7 +6871,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> stop(final T data, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get(), data, totalElements);
+        return ErrStop.stop(data, totalElements);
     }
 
     /**
@@ -7276,58 +6885,47 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> stop(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> stop(final String msg) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg);
+        return ErrStop.stop(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final String msg, final T data) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> stop(final T data, final String msg) {
+        return ErrStop.stop(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> stop(final T data, final long totalElements, final String msg) {
+        return ErrStop.stop(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final String msg, final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> stop(final T data, final long page, final long size, final long totalElements, final String msg) {
+        return ErrStop.stop(data, page, size, totalElements, msg);
     }
 
     /**
@@ -7337,8 +6935,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode) {
+        return ErrStop.stopWithSerc(serviceCode);
     }
 
     /**
@@ -7349,8 +6947,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data) {
+        return ErrStop.stopWithSerc(serviceCode, data);
     }
 
     /**
@@ -7362,8 +6960,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrStop.stopWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -7377,9 +6975,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data, page, size, totalElements);
+        return ErrStop.stopWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -7387,24 +6985,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrStop.stopWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -7412,13 +6998,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrStop.stopWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -7426,16 +7012,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> stop(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> stopWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrStop.stopWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -7448,7 +7034,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts) {
-        return Response.of(Status.STOP_ERROR.get(), data, exts);
+        return ErrStop.stopWithExts(data, exts);
     }
 
     /**
@@ -7462,7 +7048,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get(), data, exts, totalElements);
+        return ErrStop.stopWithExts(data, exts, totalElements);
     }
 
     /**
@@ -7479,7 +7065,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrStop.stopWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -7487,13 +7073,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts, final String msg) {
+        return ErrStop.stopWithExts(data, exts, msg);
     }
 
     /**
@@ -7501,15 +7087,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrStop.stopWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -7517,17 +7103,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.STOP_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrStop.stopWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -7540,8 +7126,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrStop.stopWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -7555,9 +7141,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data, exts, totalElements);
+        return ErrStop.stopWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -7573,9 +7159,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrStop.stopWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -7584,14 +7170,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrStop.stopWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -7600,15 +7186,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrStop.stopWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -7617,17 +7203,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.STOP_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> stopWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrStop.stopWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -7639,7 +7225,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> nondata() {
-        return Response.of(Status.NONDATA_ERROR.get());
+        return ErrNondata.nondata();
     }
 
     /**
@@ -7647,10 +7233,10 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param data 数据内容
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> nondata(final T data) {
-        return Response.of(Status.NONDATA_ERROR.get(), data);
+        return ErrNondata.nondata(data);
     }
 
     /**
@@ -7659,10 +7245,10 @@ public class Err {
      * @param <T>           数据内容类型
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get(), data, totalElements);
+        return ErrNondata.nondata(data, totalElements);
     }
 
     /**
@@ -7673,62 +7259,51 @@ public class Err {
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final String msg) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg);
+    public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final long page, final long size, final long totalElements) {
+        return ErrNondata.nondata(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
-     * @return Response&lt;T, E&gt;
+     * @param msg  自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final String msg, final T data) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final String msg) {
+        return ErrNondata.nondata(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final long totalElements, final String msg) {
+        return ErrNondata.nondata(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> nondata(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrNondata.nondata(data, page, size, totalElements, msg);
     }
 
     /**
@@ -7738,8 +7313,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode) {
+        return ErrNondata.nondataWithSerc(serviceCode);
     }
 
     /**
@@ -7748,10 +7323,10 @@ public class Err {
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
      * @param data        数据内容
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data) {
+        return ErrNondata.nondataWithSerc(serviceCode, data);
     }
 
     /**
@@ -7761,10 +7336,10 @@ public class Err {
      * @param serviceCode   自定义业务编码
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrNondata.nondataWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -7776,11 +7351,11 @@ public class Err {
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data, page, size, totalElements);
+        return ErrNondata.nondataWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -7788,24 +7363,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
+     * @param data        数据内容
      * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @param data        数据内容
-     * @return Response&lt;T, E&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrNondata.nondataWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -7813,13 +7376,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrNondata.nondataWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -7827,16 +7390,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> nondata(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> nondataWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrNondata.nondataWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -7849,7 +7412,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts) {
-        return Response.of(Status.NONDATA_ERROR.get(), data, exts);
+        return ErrNondata.nondataWithExts(data, exts);
     }
 
     /**
@@ -7863,7 +7426,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get(), data, exts, totalElements);
+        return ErrNondata.nondataWithExts(data, exts, totalElements);
     }
 
     /**
@@ -7880,7 +7443,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrNondata.nondataWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -7888,13 +7451,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts, final String msg) {
+        return ErrNondata.nondataWithExts(data, exts, msg);
     }
 
     /**
@@ -7902,15 +7465,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrNondata.nondataWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -7918,17 +7481,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.NONDATA_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrNondata.nondataWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -7941,8 +7504,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -7956,9 +7519,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data, exts, totalElements);
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -7974,9 +7537,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -7985,14 +7548,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -8001,15 +7564,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -8018,17 +7581,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.NONDATA_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> nondataWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrNondata.nondataWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -8040,7 +7603,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> existed() {
-        return Response.of(Status.EXISTED_ERROR.get());
+        return ErrExisted.existed();
     }
 
     /**
@@ -8048,10 +7611,10 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param data 数据内容
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> existed(final T data) {
-        return Response.of(Status.EXISTED_ERROR.get(), data);
+        return ErrExisted.existed(data);
     }
 
     /**
@@ -8060,10 +7623,10 @@ public class Err {
      * @param <T>           数据内容类型
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> existed(final T data, final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get(), data, totalElements);
+        return ErrExisted.existed(data, totalElements);
     }
 
     /**
@@ -8074,62 +7637,51 @@ public class Err {
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> existed(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final String msg) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg);
+    public static <T extends Serializable> SimpleResponse<T> existed(final T data, final long page, final long size, final long totalElements) {
+        return ErrExisted.existed(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
-     * @return Response&lt;T, E&gt;
+     * @param msg  自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final String msg, final T data) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> existed(final T data, final String msg) {
+        return ErrExisted.existed(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> existed(final T data, final long totalElements, final String msg) {
+        return ErrExisted.existed(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> existed(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrExisted.existed(data, page, size, totalElements, msg);
     }
 
     /**
@@ -8139,8 +7691,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode) {
+        return ErrExisted.existedWithSerc(serviceCode);
     }
 
     /**
@@ -8149,10 +7701,10 @@ public class Err {
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
      * @param data        数据内容
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data) {
+        return ErrExisted.existedWithSerc(serviceCode, data);
     }
 
     /**
@@ -8162,10 +7714,10 @@ public class Err {
      * @param serviceCode   自定义业务编码
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrExisted.existedWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -8177,11 +7729,11 @@ public class Err {
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data, page, size, totalElements);
+        return ErrExisted.existedWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -8189,24 +7741,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
+     * @param data        数据内容
      * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @param data        数据内容
-     * @return Response&lt;T, E&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrExisted.existedWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -8214,13 +7754,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrExisted.existedWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -8228,16 +7768,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
-     * @return Response&lt;T, E&gt;
+     * @param msg           自定义提示内容
+     * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> existed(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> existedWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrExisted.existedWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -8250,7 +7790,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts) {
-        return Response.of(Status.EXISTED_ERROR.get(), data, exts);
+        return ErrExisted.existedWithExts(data, exts);
     }
 
     /**
@@ -8264,7 +7804,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get(), data, exts, totalElements);
+        return ErrExisted.existedWithExts(data, exts, totalElements);
     }
 
     /**
@@ -8281,7 +7821,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrExisted.existedWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -8289,13 +7829,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts, final String msg) {
+        return ErrExisted.existedWithExts(data, exts, msg);
     }
 
     /**
@@ -8303,15 +7843,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrExisted.existedWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -8319,17 +7859,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.EXISTED_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrExisted.existedWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -8342,8 +7882,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -8357,9 +7897,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data, exts, totalElements);
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -8375,9 +7915,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -8386,14 +7926,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -8402,15 +7942,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -8419,17 +7959,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.EXISTED_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> existedWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrExisted.existedWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
     /* ----------------------------------------------------- */
@@ -8441,7 +7981,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> others() {
-        return Response.of(Status.OTHERS_ERROR.get());
+        return ErrOthers.others();
     }
 
     /**
@@ -8452,7 +7992,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> others(final T data) {
-        return Response.of(Status.OTHERS_ERROR.get(), data);
+        return ErrOthers.others(data);
     }
 
     /**
@@ -8464,7 +8004,7 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> others(final T data, final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get(), data, totalElements);
+        return ErrOthers.others(data, totalElements);
     }
 
     /**
@@ -8478,59 +8018,48 @@ public class Err {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> others(final T data, final long page, final long size, final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get(), data, page, size, totalElements);
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T> 数据内容类型
-     * @param msg 自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> others(final String msg) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg);
+        return ErrOthers.others(data, page, size, totalElements);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>  数据内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
+     * @param msg  自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final String msg, final T data) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data);
+    public static <T extends Serializable> SimpleResponse<T> others(final T data, final String msg) {
+        return ErrOthers.others(data, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final String msg, final T data, final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> others(final T data, final long totalElements, final String msg) {
+        return ErrOthers.others(data, totalElements, msg);
     }
 
     /**
      * 创建应答信息.
      * 
      * @param <T>           数据内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> others(final T data, final long page, final long size, final long totalElements,
+            final String msg) {
+        return ErrOthers.others(data, page, size, totalElements, msg);
     }
 
     /**
@@ -8540,8 +8069,8 @@ public class Err {
      * @param serviceCode 自定义业务编码
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()));
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode) {
+        return ErrOthers.othersWithSerc(serviceCode);
     }
 
     /**
@@ -8552,8 +8081,8 @@ public class Err {
      * @param data        数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data);
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data) {
+        return ErrOthers.othersWithSerc(serviceCode, data);
     }
 
     /**
@@ -8565,8 +8094,8 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long totalElements) {
+        return ErrOthers.othersWithSerc(serviceCode, data, totalElements);
     }
 
     /**
@@ -8580,9 +8109,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final T data, final long page, final long size,
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data, page, size, totalElements);
+        return ErrOthers.othersWithSerc(serviceCode, data, page, size, totalElements);
     }
 
     /**
@@ -8590,24 +8119,12 @@ public class Err {
      * 
      * @param <T>         数据内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
-     * @return SimpleResponse&lt;T&gt;
-     */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final String msg) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg));
-    }
-
-    /**
-     * 创建应答信息.
-     * 
-     * @param <T>         数据内容类型
-     * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
+     * @param msg         自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final String msg, final T data) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data);
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final String msg) {
+        return ErrOthers.othersWithSerc(serviceCode, data, msg);
     }
 
     /**
@@ -8615,13 +8132,13 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final String msg, final T data, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long totalElements, final String msg) {
+        return ErrOthers.othersWithSerc(serviceCode, data, totalElements, msg);
     }
 
     /**
@@ -8629,16 +8146,16 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T extends Serializable> SimpleResponse<T> others(final long serviceCode, final String msg, final T data, final long page, final long size,
-            final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data, page, size, totalElements);
+    public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrOthers.othersWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
     /**
@@ -8651,7 +8168,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts) {
-        return Response.of(Status.OTHERS_ERROR.get(), data, exts);
+        return ErrOthers.othersWithExts(data, exts);
     }
 
     /**
@@ -8665,7 +8182,7 @@ public class Err {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get(), data, exts, totalElements);
+        return ErrOthers.othersWithExts(data, exts, totalElements);
     }
 
     /**
@@ -8682,7 +8199,7 @@ public class Err {
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long page, final long size,
             final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get(), data, exts, page, size, totalElements);
+        return ErrOthers.othersWithExts(data, exts, page, size, totalElements);
     }
 
     /**
@@ -8690,13 +8207,13 @@ public class Err {
      * 
      * @param <T>  数据内容类型
      * @param <E>  扩展内容类型
-     * @param msg  自定义提示内容
      * @param data 数据内容
      * @param exts 扩展内容
+     * @param msg  自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final String msg, final T data, final E exts) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final String msg) {
+        return ErrOthers.othersWithExts(data, exts, msg);
     }
 
     /**
@@ -8704,15 +8221,15 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final String msg, final T data, final E exts,
-            final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long totalElements,
+            final String msg) {
+        return ErrOthers.othersWithExts(data, exts, totalElements, msg);
     }
 
     /**
@@ -8720,17 +8237,17 @@ public class Err {
      * 
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final String msg, final T data, final E exts, final long page,
-            final long size, final long totalElements) {
-        return Response.of(Status.OTHERS_ERROR.get().code(), msg, data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long page, final long size,
+            final long totalElements, final String msg) {
+        return ErrOthers.othersWithExts(data, exts, page, size, totalElements, msg);
     }
 
     /**
@@ -8743,8 +8260,8 @@ public class Err {
      * @param exts        扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final T data, final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts) {
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts);
     }
 
     /**
@@ -8758,9 +8275,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
             final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data, exts, totalElements);
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts, totalElements);
     }
 
     /**
@@ -8776,9 +8293,9 @@ public class Err {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final T data, final E exts,
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
             final long page, final long size, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get()), data, exts, page, size, totalElements);
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
     /**
@@ -8787,14 +8304,14 @@ public class Err {
      * @param <T>         数据内容类型
      * @param <E>         扩展内容类型
      * @param serviceCode 自定义业务编码
-     * @param msg         自定义提示内容
      * @param data        数据内容
      * @param exts        扩展内容
+     * @param msg         自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final String msg, final T data,
-            final E exts) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data, exts);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
+            final String msg) {
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts, msg);
     }
 
     /**
@@ -8803,15 +8320,15 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data, exts, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
+            final long totalElements, final String msg) {
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts, totalElements, msg);
     }
 
     /**
@@ -8820,17 +8337,17 @@ public class Err {
      * @param <T>           数据内容类型
      * @param <E>           扩展内容类型
      * @param serviceCode   自定义业务编码
-     * @param msg           自定义提示内容
      * @param data          数据内容
      * @param exts          扩展内容
      * @param page          当前页位置(从0计)
      * @param size          当前页内容(记录)数
      * @param totalElements 总内容(记录)数
+     * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final long serviceCode, final String msg, final T data,
-            final E exts, final long page, final long size, long totalElements) {
-        return Response.of(Status.bitOr(serviceCode, Status.OTHERS_ERROR.get(), msg), data, exts, page, size, totalElements);
+    public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
+            final long page, final long size, long totalElements, final String msg) {
+        return ErrOthers.othersWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
 }
