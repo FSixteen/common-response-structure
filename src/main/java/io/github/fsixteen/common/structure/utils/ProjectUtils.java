@@ -141,10 +141,10 @@ public class ProjectUtils {
                 projectCode = code;
             }
         }
-        if (null == projectCode || !projectCode.isEmpty()) {
+        if (null == projectCode || projectCode.isEmpty()) {
             projectCode = System.getProperty(ENV_PROJECT_KEY);
         }
-        if (null == projectCode || !projectCode.isEmpty()) {
+        if (null == projectCode || projectCode.isEmpty()) {
             projectCode = System.getenv(ENV_PROJECT_KEY);
         }
         return Optional.ofNullable(projectCode).map(Long::parseLong).orElseGet(() -> Status.DEFAULT_PROJECT_CODE);

@@ -164,7 +164,7 @@ public interface Status {
 
             @Override
             public long code() {
-                return (serviceCode << 22) | DEFAULT_PROJECT_CODE | vali.code() | type.code();
+                return (serviceCode << 22) | PROJECT_CODE | vali.code() | type.code();
             }
 
             @Override
