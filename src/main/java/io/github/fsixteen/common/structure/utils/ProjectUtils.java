@@ -141,7 +141,9 @@ public class ProjectUtils {
                 projectCode = code;
             }
         }
-        projectCode = System.getProperty(ENV_PROJECT_KEY);
+        if (null == projectCode || !projectCode.isEmpty()) {
+            projectCode = System.getProperty(ENV_PROJECT_KEY);
+        }
         if (null == projectCode || !projectCode.isEmpty()) {
             projectCode = System.getenv(ENV_PROJECT_KEY);
         }
