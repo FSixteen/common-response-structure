@@ -51,6 +51,12 @@ public class Response<T, E> implements Serializable {
     private Long total;
 
     /* ----------------------------------------------------- */
+    
+    /**
+     * 创建应答信息.
+     */
+    public Response() {
+    }
 
     /**
      * 创建应答信息.
@@ -218,6 +224,12 @@ public class Response<T, E> implements Serializable {
     public static class SimpleResponse<T> extends Response<T, Void> {
 
         private static final long serialVersionUID = 1L;
+        
+        /**
+         * 创建应答信息.
+         */
+        public SimpleResponse() {
+        }
 
         /**
          * 创建应答信息.
