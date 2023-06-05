@@ -113,7 +113,7 @@ public class ProjectUtils {
      */
     public static final long getProjectCode() {
         String[] files = new String[] { "/application.yml", "/application.yaml", "/application.properties", "/bootstrap.yml", "/bootstrap.yaml",
-                "/bootstrap.properties" };
+            "/bootstrap.properties" };
         // 尝试读取 ${SPRING_PROFILES_ACTIVE}
         String active = null;
         for (String file : files) {
@@ -124,9 +124,9 @@ public class ProjectUtils {
         }
         // 若存在 ${SPRING_PROFILES_ACTIVE}, 组装可用文件列表名称
         String[] activeFiles = null != active
-                ? new String[] { "/application-" + active + ".yml", "/application-" + active + ".yaml", "/application-" + active + ".properties",
-                        "/bootstrap-" + active + ".yml", "/bootstrap-" + active + ".yaml", "/bootstrap-" + active + ".properties" }
-                : new String[] {};
+            ? new String[] { "/application-" + active + ".yml", "/application-" + active + ".yaml", "/application-" + active + ".properties",
+                "/bootstrap-" + active + ".yml", "/bootstrap-" + active + ".yaml", "/bootstrap-" + active + ".properties" }
+            : new String[] {};
 
         String projectCode = Long.toString(Status.DEFAULT_PROJECT_CODE);
         for (String file : files) {

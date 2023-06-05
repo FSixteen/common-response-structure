@@ -98,7 +98,7 @@ public interface OkOthers {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> others(final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.of(Status.OTHERS_SUCCESS.get().code(), msg, data, page, size, totalElements);
     }
 
@@ -150,7 +150,7 @@ public interface OkOthers {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.of(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get()), data, page, size, totalElements);
     }
 
@@ -194,7 +194,7 @@ public interface OkOthers {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> othersWithSerc(final long serviceCode, final T data, final long page, final long size,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.of(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get(), msg), data, page, size, totalElements);
     }
 
@@ -238,7 +238,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.OTHERS_SUCCESS.get(), data, exts, page, size, totalElements);
     }
 
@@ -268,7 +268,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.OTHERS_SUCCESS.get().code(), msg, data, exts, totalElements);
     }
 
@@ -286,7 +286,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithExts(final T data, final E exts, final long page, final long size,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.ofExts(Status.OTHERS_SUCCESS.get().code(), msg, data, exts, page, size, totalElements);
     }
 
@@ -316,7 +316,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get()), data, exts, totalElements);
     }
 
@@ -334,7 +334,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
-            final long page, final long size, final long totalElements) {
+        final long page, final long size, final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get()), data, exts, page, size, totalElements);
     }
 
@@ -350,7 +350,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get(), msg), data, exts);
     }
 
@@ -367,7 +367,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get(), msg), data, exts, totalElements);
     }
 
@@ -386,7 +386,7 @@ public interface OkOthers {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> othersWithSercExts(final long serviceCode, final T data, final E exts,
-            final long page, final long size, long totalElements, final String msg) {
+        final long page, final long size, long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.OTHERS_SUCCESS.get(), msg), data, exts, page, size, totalElements);
     }
 

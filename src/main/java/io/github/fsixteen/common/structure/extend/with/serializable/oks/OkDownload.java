@@ -98,7 +98,7 @@ public interface OkDownload {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> download(final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.of(Status.DOWNLOAD_SUCCESS.get().code(), msg, data, page, size, totalElements);
     }
 
@@ -150,7 +150,7 @@ public interface OkDownload {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get()), data, page, size, totalElements);
     }
 
@@ -178,7 +178,7 @@ public interface OkDownload {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get(), msg), data, totalElements);
     }
 
@@ -195,7 +195,7 @@ public interface OkDownload {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T extends Serializable> SimpleResponse<T> downloadWithSerc(final long serviceCode, final T data, final long page, final long size,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.of(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get(), msg), data, page, size, totalElements);
     }
 
@@ -239,7 +239,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.DOWNLOAD_SUCCESS.get(), data, exts, page, size, totalElements);
     }
 
@@ -269,7 +269,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.DOWNLOAD_SUCCESS.get().code(), msg, data, exts, totalElements);
     }
 
@@ -287,7 +287,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithExts(final T data, final E exts, final long page, final long size,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.ofExts(Status.DOWNLOAD_SUCCESS.get().code(), msg, data, exts, page, size, totalElements);
     }
 
@@ -317,7 +317,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get()), data, exts, totalElements);
     }
 
@@ -335,7 +335,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
-            final long page, final long size, final long totalElements) {
+        final long page, final long size, final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get()), data, exts, page, size, totalElements);
     }
 
@@ -351,7 +351,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get(), msg), data, exts);
     }
 
@@ -368,7 +368,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
-            final long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get(), msg), data, exts, totalElements);
     }
 
@@ -387,7 +387,7 @@ public interface OkDownload {
      * @return Response&lt;T, E&gt;
      */
     public static <T extends Serializable, E extends Serializable> Response<T, E> downloadWithSercExts(final long serviceCode, final T data, final E exts,
-            final long page, final long size, long totalElements, final String msg) {
+        final long page, final long size, long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DOWNLOAD_SUCCESS.get(), msg), data, exts, page, size, totalElements);
     }
 

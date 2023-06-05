@@ -26,25 +26,25 @@ public class Response<T, E> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /** 提示状态码 */
+    /** 提示状态码. */
     @JsonInclude(value = Include.NON_NULL)
     @Schema(description = "提示状态码", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "提示状态码", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private long code;
 
-    /** 提示内容 */
+    /** 提示内容. */
     @JsonInclude(value = Include.NON_NULL)
     @Schema(description = "提示内容", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "提示内容", required = true, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private String msg;
 
-    /** 元数据 */
+    /** 元数据. */
     @JsonInclude(value = Include.NON_NULL)
     @Schema(description = "元数据", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "元数据", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private Meta<T, E> meta;
 
-    /** 总内容(记录)数 */
+    /** 总内容(记录)数. */
     @JsonInclude(value = Include.NON_NULL)
     @Schema(description = "总内容(记录)数", requiredMode = RequiredMode.NOT_REQUIRED, accessMode = AccessMode.READ_ONLY)
     @ApiModelProperty(value = "总内容(记录)数", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
@@ -441,7 +441,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> ofExts(final StatusInterface status, final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return ofExts(status.code(), status.msg(), data, exts, page, size, totalElements);
     }
 
@@ -759,7 +759,7 @@ public class Response<T, E> implements Serializable {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T> SimpleResponse<T> okWithSerc(final long serviceCode, final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Ok.generalWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
@@ -895,7 +895,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> okWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Ok.generalWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
@@ -945,7 +945,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> okWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size, long totalElements,
-            final String msg) {
+        final String msg) {
         return Ok.generalWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
@@ -1129,7 +1129,7 @@ public class Response<T, E> implements Serializable {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T> SimpleResponse<T> errWithSerc(final long serviceCode, final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Err.generalWithSerc(serviceCode, data, page, size, totalElements, msg);
     }
 
@@ -1265,7 +1265,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> errWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Err.generalWithSercExts(serviceCode, data, exts, page, size, totalElements);
     }
 
@@ -1315,7 +1315,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> errWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            long totalElements, final String msg) {
+        long totalElements, final String msg) {
         return Err.generalWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 

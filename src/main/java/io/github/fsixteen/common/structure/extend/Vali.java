@@ -13,9 +13,9 @@ import io.github.fsixteen.common.structure.StatusInterface;
  */
 public enum Vali implements StatusInterface {
 
-    /** 错误, 警告 */
+    /** 错误, 警告. */
     ERROR(VALI_START, "错误"),
-    /** 成功, 有效 */
+    /** 成功, 有效. */
     SUCCESS(ERROR.code() + VALI_STEP, "成功");
 
     /**

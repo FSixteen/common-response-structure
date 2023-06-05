@@ -190,7 +190,7 @@ public interface ErrDelete {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T> SimpleResponse<T> deleteWithSerc(final long serviceCode, final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.of(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, page, size, totalElements);
     }
 
@@ -280,7 +280,7 @@ public interface ErrDelete {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> deleteWithExts(final T data, final E exts, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.DELETE_ERROR.get().code(), msg, data, exts, page, size, totalElements);
     }
 
@@ -327,7 +327,7 @@ public interface ErrDelete {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DELETE_ERROR.get()), data, exts, page, size, totalElements);
     }
 
@@ -377,7 +377,7 @@ public interface ErrDelete {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> deleteWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            long totalElements, final String msg) {
+        long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.DELETE_ERROR.get(), msg), data, exts, page, size, totalElements);
     }
 

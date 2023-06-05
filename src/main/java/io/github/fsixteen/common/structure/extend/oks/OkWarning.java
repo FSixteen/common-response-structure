@@ -190,7 +190,7 @@ public interface OkWarning {
      * @return SimpleResponse&lt;T&gt;
      */
     public static <T> SimpleResponse<T> warningWithSerc(final long serviceCode, final T data, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.of(Status.bitOr(serviceCode, Status.WARNING_SUCCESS.get(), msg), data, page, size, totalElements);
     }
 
@@ -280,7 +280,7 @@ public interface OkWarning {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> warningWithExts(final T data, final E exts, final long page, final long size, final long totalElements,
-            final String msg) {
+        final String msg) {
         return Response.ofExts(Status.WARNING_SUCCESS.get().code(), msg, data, exts, page, size, totalElements);
     }
 
@@ -327,7 +327,7 @@ public interface OkWarning {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            final long totalElements) {
+        final long totalElements) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.WARNING_SUCCESS.get()), data, exts, page, size, totalElements);
     }
 
@@ -377,7 +377,7 @@ public interface OkWarning {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> warningWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-            long totalElements, final String msg) {
+        long totalElements, final String msg) {
         return Response.ofExts(Status.bitOr(serviceCode, Status.WARNING_SUCCESS.get(), msg), data, exts, page, size, totalElements);
     }
 
