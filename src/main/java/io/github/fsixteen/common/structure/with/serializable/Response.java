@@ -52,6 +52,12 @@ public class Response<T extends Serializable, E extends Serializable> implements
     @ApiModelProperty(value = "总内容(记录)数", required = false, accessMode = io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY)
     private Long total;
 
+    /**
+     * 创建应答信息.
+     */
+    public Response() {
+    }
+
     /* ----------------------------------------------------- */
 
     /**
@@ -220,6 +226,12 @@ public class Response<T extends Serializable, E extends Serializable> implements
     public static class SimpleResponse<T extends Serializable> extends Response<T, Void> {
 
         private static final long serialVersionUID = 1L;
+
+        /**
+         * 创建应答信息.
+         */
+        public SimpleResponse() {
+        }
 
         /**
          * 创建应答信息.
