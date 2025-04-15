@@ -155,7 +155,7 @@ public class Response<T, E> implements Serializable {
      * 
      * @param code 提示状态码
      */
-    public void setCode(long code) {
+    public void setCode(final long code) {
         this.code = code;
     }
 
@@ -173,7 +173,7 @@ public class Response<T, E> implements Serializable {
      * 
      * @param msg 提示内容
      */
-    public void setMsg(String msg) {
+    public void setMsg(final String msg) {
         this.msg = msg;
     }
 
@@ -191,7 +191,7 @@ public class Response<T, E> implements Serializable {
      * 
      * @param meta 元数据
      */
-    public void setMeta(Meta<T, E> meta) {
+    public void setMeta(final Meta<T, E> meta) {
         this.meta = meta;
     }
 
@@ -209,7 +209,7 @@ public class Response<T, E> implements Serializable {
      * 
      * @param total 总内容(记录)数
      */
-    public void setTotal(Long total) {
+    public void setTotal(final Long total) {
         this.total = total;
     }
 
@@ -237,7 +237,7 @@ public class Response<T, E> implements Serializable {
          * @param code 提示状态码
          * @param msg  提示内容
          */
-        public SimpleResponse(long code, String msg) {
+        public SimpleResponse(final long code, final String msg) {
             super(code, msg);
         }
 
@@ -248,7 +248,7 @@ public class Response<T, E> implements Serializable {
          * @param msg  提示内容
          * @param meta 元数据内容
          */
-        public SimpleResponse(long code, String msg, Meta<T, Void> meta) {
+        public SimpleResponse(final long code, final String msg, final Meta<T, Void> meta) {
             super(code, msg, meta);
         }
 
@@ -259,7 +259,7 @@ public class Response<T, E> implements Serializable {
          * @param msg  提示内容
          * @param data 数据内容
          */
-        public SimpleResponse(long code, String msg, T data) {
+        public SimpleResponse(final long code, final String msg, final T data) {
             super(code, msg, data);
         }
 
@@ -271,7 +271,7 @@ public class Response<T, E> implements Serializable {
          * @param data          数据内容
          * @param totalElements 总内容(记录)数
          */
-        public SimpleResponse(long code, String msg, T data, long totalElements) {
+        public SimpleResponse(final long code, final String msg, final T data, final long totalElements) {
             this(code, msg, data, PageInfo.of(totalElements));
         }
 
@@ -283,7 +283,7 @@ public class Response<T, E> implements Serializable {
          * @param data 数据内容
          * @param page 分页信息
          */
-        public SimpleResponse(long code, String msg, T data, PageInfo page) {
+        public SimpleResponse(final long code, final String msg, final T data, final PageInfo page) {
             super(code, msg, data, null, page);
         }
 
@@ -298,7 +298,7 @@ public class Response<T, E> implements Serializable {
          * @param size          当前页内容(记录)数
          * @param totalElements 总内容(记录)数
          */
-        public SimpleResponse(long code, String msg, T data, Void exts, long page, long size, long totalElements) {
+        public SimpleResponse(final long code, final String msg, final T data, final Void exts, final long page, final long size, final long totalElements) {
             super(code, msg, data, exts, page, size, totalElements);
         }
 
@@ -455,7 +455,7 @@ public class Response<T, E> implements Serializable {
      * @param msg  提示内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T> SimpleResponse<T> of(long code, String msg) {
+    public static <T> SimpleResponse<T> of(final long code, final String msg) {
         return new SimpleResponse<>(code, msg);
     }
 
@@ -469,7 +469,7 @@ public class Response<T, E> implements Serializable {
      * @param meta 元数据
      * @return Response&lt;T, E&gt;
      */
-    public static <T, E> Response<T, E> of(long code, String msg, final Meta<T, E> meta) {
+    public static <T, E> Response<T, E> of(final long code, final String msg, final Meta<T, E> meta) {
         return new Response<>(code, msg, meta);
     }
 
@@ -482,7 +482,7 @@ public class Response<T, E> implements Serializable {
      * @param data 数据内容
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T> SimpleResponse<T> of(long code, String msg, final T data) {
+    public static <T> SimpleResponse<T> of(final long code, final String msg, final T data) {
         return new SimpleResponse<>(code, msg, data);
     }
 
@@ -496,7 +496,7 @@ public class Response<T, E> implements Serializable {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T> SimpleResponse<T> of(long code, String msg, final T data, final long totalElements) {
+    public static <T> SimpleResponse<T> of(final long code, final String msg, final T data, final long totalElements) {
         return new SimpleResponse<>(code, msg, data, totalElements);
     }
 
@@ -510,7 +510,7 @@ public class Response<T, E> implements Serializable {
      * @param page 分页信息
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T> SimpleResponse<T> of(long code, String msg, final T data, final PageInfo page) {
+    public static <T> SimpleResponse<T> of(final long code, final String msg, final T data, final PageInfo page) {
         return new SimpleResponse<>(code, msg, data, page);
     }
 
@@ -526,7 +526,7 @@ public class Response<T, E> implements Serializable {
      * @param totalElements 总内容(记录)数
      * @return SimpleResponse&lt;T&gt;
      */
-    public static <T> SimpleResponse<T> of(long code, String msg, final T data, final long page, final long size, final long totalElements) {
+    public static <T> SimpleResponse<T> of(final long code, final String msg, final T data, final long page, final long size, final long totalElements) {
         return new SimpleResponse<>(code, msg, Meta.of(data, PageInfo.of(page, size, totalElements)));
     }
 
@@ -541,7 +541,7 @@ public class Response<T, E> implements Serializable {
      * @param exts 扩展内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T, E> Response<T, E> ofExts(long code, String msg, final T data, final E exts) {
+    public static <T, E> Response<T, E> ofExts(final long code, final String msg, final T data, final E exts) {
         return new Response<>(code, msg, Meta.of(data, exts, null));
     }
 
@@ -557,7 +557,7 @@ public class Response<T, E> implements Serializable {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T, E> Response<T, E> ofExts(long code, String msg, final T data, final E exts, final long totalElements) {
+    public static <T, E> Response<T, E> ofExts(final long code, final String msg, final T data, final E exts, final long totalElements) {
         return new Response<>(code, msg, data, exts, 0, totalElements, totalElements);
     }
 
@@ -575,7 +575,8 @@ public class Response<T, E> implements Serializable {
      * @param totalElements 总内容(记录)数
      * @return Response&lt;T, E&gt;
      */
-    public static <T, E> Response<T, E> ofExts(long code, String msg, final T data, final E exts, final long page, final long size, final long totalElements) {
+    public static <T, E> Response<T, E> ofExts(final long code, final String msg, final T data, final E exts, final long page, final long size,
+        final long totalElements) {
         return new Response<>(code, msg, data, exts, page, size, totalElements);
     }
 
@@ -944,8 +945,8 @@ public class Response<T, E> implements Serializable {
      * @param msg           自定义提示内容
      * @return Response&lt;T, E&gt;
      */
-    public static <T, E> Response<T, E> okWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size, long totalElements,
-        final String msg) {
+    public static <T, E> Response<T, E> okWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
+        final long totalElements, final String msg) {
         return Ok.generalWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
@@ -1315,7 +1316,7 @@ public class Response<T, E> implements Serializable {
      * @return Response&lt;T, E&gt;
      */
     public static <T, E> Response<T, E> errWithSercExts(final long serviceCode, final T data, final E exts, final long page, final long size,
-        long totalElements, final String msg) {
+        final long totalElements, final String msg) {
         return Err.generalWithSercExts(serviceCode, data, exts, page, size, totalElements, msg);
     }
 
