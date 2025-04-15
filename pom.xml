@@ -4,7 +4,7 @@
 
   <groupId>io.github.fsixteen</groupId>
   <artifactId>common-response-structure</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <packaging>jar</packaging>
 
   <name>common-response-structure</name>
@@ -37,7 +37,7 @@
     <!-- 指定JDK版本 -->
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+    <!-- <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion> -->
     <!-- 编译时的编码 -->
     <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
@@ -228,7 +228,7 @@
             </importOrder>
             <removeUnusedImports />
             <eclipse>
-              <version>4.24.0</version>
+              <version>4.24</version>
               <file>formatter.xml</file>
             </eclipse>
           </java>

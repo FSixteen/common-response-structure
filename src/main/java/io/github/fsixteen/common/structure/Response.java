@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 /**
  * 基础应答数据结构.<br>
  * 
+ * @param <T> 数据内容类型
+ * @param <E> 扩展内容类型
  * @author FSixteen
  * @since V1.0.0
  */
@@ -216,6 +218,7 @@ public class Response<T, E> implements Serializable {
     /**
      * 简化应答数据结构.<br>
      * 
+     * @param <T> 数据内容类型
      * @author FSixteen
      * @since V1.0.0
      */
