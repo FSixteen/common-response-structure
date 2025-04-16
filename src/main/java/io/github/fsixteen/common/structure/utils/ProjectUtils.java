@@ -23,10 +23,10 @@ public class ProjectUtils {
 
     private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
 
-    /** 项目编码环境变量 */
+    /** 项目编码环境变量. */
     public static final String PROJECT_KEY = "project.code";
 
-    /** 项目编码环境变量 */
+    /** 项目编码环境变量. */
     public static final String ENV_PROJECT_KEY = "__" + PROJECT_KEY.toUpperCase() + "__";
 
     private ProjectUtils() {

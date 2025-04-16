@@ -5,7 +5,6 @@ package io.github.fsixteen.common.structure.constants;
  * 
  * @author FSixteen
  * @since V1.0.0
- *        .
  */
 public class Constant {
 
@@ -52,5 +51,8 @@ public class Constant {
     public static final long BUSS_LENGTH = 30;
     /** 自定义业务编码终止码. */
     public static final long BUSS_END = (0b0001L << (BUSS_OFFSET + BUSS_LENGTH)) - (0b0001L << BUSS_OFFSET);
+
+    private Constant() {
+    }
 
 }
